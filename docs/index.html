@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Spatial Data Analysis with inlabru - Tidying and Wrangling spatial data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="styles.css">
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Spatial Data Analysis with inlabru</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item">
+    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Spatial data manipulation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PP.html" rel="" target="">
+ <span class="menu-text">Point process modelling</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">Mesh parameters</span></a>
+  </li>  
+</ul>
+<div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul>
+<li>
+<a href="#accessing-and-manipulating-spatial-data" id="toc-accessing-and-manipulating-spatial-data" class="nav-link active" data-scroll-target="#accessing-and-manipulating-spatial-data"><span class="header-section-number">1</span> Accessing and manipulating spatial data</a>
+  <ul class="collapse">
+<li><a href="#managing-crs" id="toc-managing-crs" class="nav-link" data-scroll-target="#managing-crs"><span class="header-section-number">1.1</span> Managing CRS</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization"><span class="header-section-number">1.2</span> Visualization</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#integration-of-sf-with-inla-and-inlabru" id="toc-integration-of-sf-with-inla-and-inlabru" class="nav-link" data-scroll-target="#integration-of-sf-with-inla-and-inlabru"><span class="header-section-number">2</span> Integration of <code>sf</code> with INLA and <code>inlabru</code></a>
+  <ul class="collapse">
+<li><a href="#logistic-regression-example" id="toc-logistic-regression-example" class="nav-link" data-scroll-target="#logistic-regression-example"><span class="header-section-number">2.1</span> Logistic regression example</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#fmesher-and-spatial-models" id="toc-fmesher-and-spatial-models" class="nav-link" data-scroll-target="#fmesher-and-spatial-models"><span class="header-section-number">3</span> <code>fmesher</code> and Spatial models</a>
+  <ul class="collapse">
+<li><a href="#building-a-mesh-with-fmesher" id="toc-building-a-mesh-with-fmesher" class="nav-link" data-scroll-target="#building-a-mesh-with-fmesher"><span class="header-section-number">3.1</span> Building a mesh with <code>fmesher</code></a></li>
+  </ul>
+</li>
+  <li><a href="#fitting-a-spatially-explicit-model" id="toc-fitting-a-spatially-explicit-model" class="nav-link" data-scroll-target="#fitting-a-spatially-explicit-model"><span class="header-section-number">4</span> Fitting a spatially explicit model</a></li>
+  <li><a href="#predictions" id="toc-predictions" class="nav-link" data-scroll-target="#predictions"><span class="header-section-number">5</span> Predictions</a></li>
+  <li><a href="#car-models" id="toc-car-models" class="nav-link" data-scroll-target="#car-models"><span class="header-section-number">6</span> CAR models</a></li>
+  </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Tidying and Wrangling spatial data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><p>Ecological studies usually involve the analysis of data that are geographically referenced. Over the last decade, different packages have been developed to handle geographic data in R with the <code>sp</code> package (<em>now not longer supported</em>) being for many years one of the key geospatial R packages for handling spatial data. However, new technologies have shown an important increase in the accuracy of georeferencing, leading to a more precise coordinate representation. In consequence, the code in which coordinate reference systems (CRS) are written has been updated. To have a better understanding of what these changes are and a bit of the history behind, I recommend the following reading:</p>
+<p><a href="https://psfaculty.plantsciences.ucdavis.edu/plant/additionaltopics_datumwarning.pdf" class="uri">https://psfaculty.plantsciences.ucdavis.edu/plant/additionaltopics_datumwarning.pdf</a></p>
+<p>In summary, recent changes in <code>GDAL</code> and <code>PROJ</code> packages (and in consequence any package that depended on these ones) do not longer support using <code>proj4strings</code> to represent a CRS because it cannot hold all the details of a projection. Intead, the current approach to represent a CRS is with the <code>WKT2</code> strings, a standardized text-based format developed by the Open Geospatial Consortium (OGC). However, coding the <code>WKT2</code> manually can be difficult due to the complexity involved in the CRS specification. A common aproach to address this is to specify the EPSG code (European Petroleum Survey Group) which is a uniform mapping system that identifies each coordinate refence system and projections. As a consequence of all of these changes, the OGC developed the <code>sf</code> package as standardized way to encode spatial data that has replaced the <code>sp</code> and <code>rgeos</code> packages. The <code>sf</code> has gained a lot of support and different resources and tutorials have become available. Here are some tutorials you might find useful to get you started with the <code>sf</code> library.</p>
+<ul>
+<li><p>Pebesma, E.; Bivand, R. (2023). Spatial Data Science: With Applications in R (1st ed.). 314 pages. Chapman and Hall/CRC. https://doi.org/10.1201/9780429459016 <a href="https://r-spatial.org/book/" class="uri">https://r-spatial.org/book/</a></p></li>
+<li><p>Lovelace, R., Nowosad, J., &amp; Muenchow, J. (2019). <em>Geocomputation with R</em>. Chapman and Hall/CRC. <a href="https://geocompr.robinlovelace.net/index.html" class="uri">https://geocompr.robinlovelace.net/index.html</a></p></li>
+<li><p>Vanderhaeghe(2021) <em>Goodbye PROJ.4! How to specify a coordinate reference system in R?</em>. <a href="https://inbo.github.io/tutorials/tutorials/spatial_crs_coding/" class="uri">https://inbo.github.io/tutorials/tutorials/spatial_crs_coding/</a></p></li>
+</ul>
+<p>The <code>sf</code> package provides a more convenient and flexible framework for handling spatial data by defining more intuitive spatial data-structures compared to <code>sp</code>. In the next sections I will go throught some examples for handling spatial objects, CRS and projections using <code>sf</code> and their implementation with <code>inlabru</code>.</p>
+<section id="accessing-and-manipulating-spatial-data" class="level1" data-number="1"><h1 data-number="1">
+<span class="header-section-number">1</span> Accessing and manipulating spatial data</h1>
+<p>First, we will begin by downloading some data from the <code>geodata</code> R package. This package contains a variety functions for downloading geographic data (e.g.&nbsp;climate, elevation, soil, crop, species occurrence, and administrative boundaries) for spatial analysis and mapping. We begin by downloading the two following data sets:</p>
+<ol type="1">
+<li>UK boundary as a <code>SpatVector</code> class of object.</li>
+<li>UK Elevation raster layer as a <code>SpatRaster</code> class of object.</li>
+</ol>
+<p>Both data sets are defined by a spatial class of objects in <code>terra</code>, an R package (which substitutes the older <code>raster</code> library) that facilitates access, manipulation and visualization of points, lines, polygons and raster (grid) data.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geodata</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/">viridis</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">uk_mask</span> <span class="op">&lt;-</span> <span class="fu">geodata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geodata/man/gadm.html">gadm</a></span><span class="op">(</span>country<span class="op">=</span><span class="st">'GBR'</span>, level<span class="op">=</span><span class="fl">1</span>,path<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">uk_mask</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "SpatVector"
+attr(,"package")
+[1] "terra"</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">uk_elevation</span> <span class="op">&lt;-</span> <span class="fu">geodata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geodata/man/elevation.html">elevation_30s</a></span><span class="op">(</span>country<span class="op">=</span><span class="st">'GBR'</span>, level<span class="op">=</span><span class="fl">1</span>,path<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">uk_elevation</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "SpatRaster"
+attr(,"package")
+[1] "terra"</code></pre>
+</div>
+</div>
+<p>Now can do some spatial manipulation for some of these data sets, e.g.&nbsp;lets subset only the area corresponding to England. We can load the <code>tidyterra</code> package to manipulate <code>terra</code> defined objects, this has a nice integration with <code>tidyverse</code> . Converting a <code>SpatVector</code> class of object to a <code>sf</code> obejct is quite straightforwards. This allows us to easily set an appropriate CRS, e.g.&nbsp;based on the EPSG code:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/">tidyterra</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">England_border</span> <span class="op">&lt;-</span> <span class="va">uk_mask</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">NAME_1</span> <span class="op"><a href="https://rdrr.io/pkg/terra/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Northern Ireland"</span>,<span class="st">"Scotland"</span>,<span class="st">"Wales"</span> <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">27700</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get the crs units</span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">England_border</span><span class="op">)</span><span class="op">$</span><span class="va">units</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "m"</code></pre>
+</div>
+</div>
+<section id="managing-crs" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="managing-crs">
+<span class="header-section-number">1.1</span> Managing CRS</h2>
+<p>Notice that the default units are in meters, to change to say Km, we simply transform the crs accordingly:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">England_border</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">England_border</span>,<span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"units=m"</span>,<span class="st">"units=km"</span>,<span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">England_border</span><span class="op">)</span><span class="op">$</span><span class="va">proj4string</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">England_border</span><span class="op">)</span><span class="op">$</span><span class="va">units</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "km"</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can remove all small islands for e.g.&nbsp;by computing the different polygon and sort them out based on their area.</p>
+<div class="cell" data-layout-align="center">
+<details><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">England_border_mainland</span> <span class="op">&lt;-</span> <span class="va">England_border</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"POLYGON"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>area <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_area</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">England_border_mainland</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Now lets load some occurrence data an set everything on the correct CRS. First we load the presence-absence records for the speckled wood butterfly (<em>Pararge aegeria</em>) and convert this to an <code>sf</code> class object while assigning the correct crs.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">occurrences</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"P_Aegeria_WCBS.csv"</span> ,h<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">occurrences_sf</span> <span class="op">&lt;-</span> <span class="va">occurrences</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>                           crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">England_border</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We know that these data are already in the nothings and eastings. However, your data might be in longitude and latitude coordinates. Thus, you can set the original crs when converting it to an <code>sf</code> class and the use the <code>st_stranform</code> to transform it to a different CRS.</p>
+<pre><code>my_data %&gt;% st_as_sf(coords = c("longitude", "latitude"),
+                 crs = "+proj=longlat +datum=WGS84") %&gt;% 
+  st_transform(st_crs(England_border))</code></pre>
+</div>
+</div>
+<p>For the elevation raster, we can use the <code>project</code> function to assign the correct crs and the we can <code>mask</code> and <code>crop</code> it to the area we are interested in.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">elevation_England</span> <span class="op">&lt;-</span> <span class="va">uk_elevation</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/project.html">project</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html">crs</a></span><span class="op">(</span><span class="va">England_border_mainland</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/mask.html">mask</a></span><span class="op">(</span><span class="va">England_border_mainland</span><span class="op">)</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crop.html">crop</a></span><span class="op">(</span><span class="va">England_border_mainland</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="visualization" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="visualization">
+<span class="header-section-number">1.2</span> Visualization</h2>
+<p>If everything is fine you should be able to overlay the different layers in a single plot. Both <code>sf</code> and <code>tidyterra</code> integrates easily with <code>ggplot2</code>. So we can call <code>geom_sf</code> and <code>geom_spatraster</code> to add a layer to our base ggplot:</p>
+<div class="cell" data-layout-align="center">
+<details><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html">geom_spatraster</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">elevation_England</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html">scale_fill_viridis</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"Elevation"</span><span class="op">)</span><span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span> <span class="va">occurrences_sf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>,size<span class="op">=</span><span class="fl">0.9</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"Occupancy \n status"</span>,</span>
+<span>                     values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"skyblue"</span>,<span class="st">"orange"</span><span class="op">)</span>,</span>
+<span>                     labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Absence"</span>,<span class="st">"Presence"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="integration-of-sf-with-inla-and-inlabru" class="level1" data-number="2"><h1 data-number="2">
+<span class="header-section-number">2</span> Integration of <code>sf</code> with INLA and <code>inlabru</code>
+</h1>
+<p>INLA offers a computationally efficient framework to make accurate Bayesian inference for the class of latent Gaussian models. A LGM is a hierarchical Bayesian model of the form:</p>
+<span class="math display">\[\begin{align*}
+
+        \theta&amp;\sim\pi(\theta)\\
+        \textbf{x}|\theta &amp;\sim\pi(\textbf{x}|\theta) = \mathcal{N}(0,\textbf{Q}^{-1}(\theta))\\
+       \textbf{y}|\textbf{x},\theta &amp;\sim \pi(\textbf{y}| \pmb{\eta}(\textbf{x}),\theta)\\
+        \pmb{\eta}(\textbf{x})&amp;= \textbf{A}\textbf{x},
+        
+  \end{align*}\]</span>
+<p><span class="math inline">\(\mathbf{x}\)</span> is the latent Gaussian field (i.e., the joint distribution of all parameters in the linear predictor) with precision matrix <span class="math inline">\(\mathbf{Q}^{-1}\)</span> that depends on hyper parameters <span class="math inline">\(\theta\)</span>.The element of each linear <span class="math inline">\(\eta_i(\textbf{x})\)</span> is linked to the latent field via a linear map defined by sparse design matrix <span class="math inline">\(\textbf{A}\)</span>, i.e.&nbsp;<span class="math inline">\(\eta_i(\mathbf{x}) = \mathbf{A}_i\mathbf{x}\)</span> is the additive predictor for observation <span class="math inline">\(y_i\)</span>. The parameter of interest in the likelihood function of our response data with density <span class="math inline">\(\pi(y_i|\eta_i(\mathbf{x}),\theta)\)</span>, can be linked to the linear predictor via a link function <span class="math inline">\(g^{-1}(\cdot)\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The linear predictor can include a variety of random effects such as smooth terms or spatiotemporal components by incorporating Gaussian random fields (GRFs) into models. This is achieved by using the stochastic partial differential equation (SPDE) method introduced by <span class="citation" data-cites="lindgren2011">(<a href="#ref-lindgren2011" role="doc-biblioref">Lindgren, Rue, and Lindström 2011</a>)</span> within the R-INLA package. The SPDE approach offers a computationally efficient way to approximate the Mat’{e}rn process using a GMRF. It uses the fact that the Mat’{e}rn field is a solution to a particular SPDE. The solution is then approximated using a finite combination of piecewise linear basis functions defined on a triangulation. The main result and strength of the approach is that the solution is completely defined by a Gaussian vector of weights (defined on the triangulation vertices) with zero mean and a sparse precision matrix. This sparsity gives the great computational benefits of the SPDE approach .</p>
+</div>
+</div>
+<p>INLA has gained popularity among applied statisticians and scientists not only because of its ongoing developments and improved numerical stability and scalability but also for the flexibility to fit widely-used statistical models such as generalized linear mixed models (GLMM), generalized additive mixed models (GAMM) and spatial and spatio-temporal models.</p>
+<p><code>inlabru</code> provides a simplified interface for fitting complex spatial and spatiotemporal models using INLA. It facilitates model fitting and prediction, while extending some of INLA capabilities (e.g., by fitting models with non-linear components), and integrates well with other widely-used packages for spatial data manipulation and visualization such as <code>sf</code> and <code>terra</code>.</p>
+<section id="logistic-regression-example" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="logistic-regression-example">
+<span class="header-section-number">2.1</span> Logistic regression example</h2>
+<p>We will fit a logistic regression to the speckled wood occurrence data to illustrate a straight forward implementation of a spatial model using spatial covariates. The model likelihood is given by:</p>
+<p><span class="math display">\[
+y_i \sim \mathrm{Bernoulli}(\psi_i)
+\]</span></p>
+<p>Where the probability of presence <span class="math inline">\(\psi\)</span> is defined as a logit-scaled linear predictor <span class="math inline">\(\eta\)</span>:</p>
+<p><span class="math display">\[
+\mathrm{logit}(\psi_i) = \eta_i = \beta_0 +\beta_1 \mbox{elevation}_i + \omega_i
+\]</span></p>
+<p>Here, <span class="math inline">\(\omega\)</span> can be defined as a i.i.d site-level random effects or as a continuous Gaussian spatial field with Matérn covariance. We can easily evaluate the elevation values at the locations where observations were made.</p>
+<ol type="1">
+<li>One option is to <code>extract</code> the raster values at target <code>sf</code> object coordinates and add this data to the input data frame.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">occurrences_sf</span> <span class="op">&lt;-</span> <span class="va">occurrences_sf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/extract.html">extract</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elevation_England</span>,y<span class="op">=</span><span class="va">occurrences_sf</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.inlabru.org">inlabru</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">INLA</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cmp_model1</span> <span class="op">&lt;-</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span> </span>
+<span>    <span class="fu">Intercept</span><span class="op">(</span><span class="fl">1</span>,mean.linear<span class="op">=</span><span class="fl">0</span>, prec.linear<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">elev</span><span class="op">(</span><span class="va">GBR_elv_msk</span>, model <span class="op">=</span> <span class="st">"linear"</span>,mean.linear<span class="op">=</span><span class="fl">0</span>, prec.linear<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">site_raneff</span><span class="op">(</span><span class="va">ID</span>, model <span class="op">=</span> <span class="st">"iid"</span><span class="op">)</span> </span>
+<span>  </span>
+<span>  </span>
+<span><span class="va">lik_model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/like.html">like</a></span><span class="op">(</span><span class="st">"binomial"</span>,</span>
+<span>                     formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">.</span>,</span>
+<span>                     data <span class="op">=</span> <span class="va">occurrences_sf</span>,</span>
+<span>                     Ntrials <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                     control.family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span><span class="va">model_1</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/bru.html">bru</a></span><span class="op">(</span><span class="va">cmp_model1</span> , <span class="va">lik_model1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="appdiyyvgq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#appdiyyvgq table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#appdiyyvgq thead, #appdiyyvgq tbody, #appdiyyvgq tfoot, #appdiyyvgq tr, #appdiyyvgq td, #appdiyyvgq th {
+  border-style: none;
+}
+
+#appdiyyvgq p {
+  margin: 0;
+  padding: 0;
+}
+
+#appdiyyvgq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#appdiyyvgq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#appdiyyvgq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#appdiyyvgq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#appdiyyvgq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#appdiyyvgq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#appdiyyvgq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#appdiyyvgq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#appdiyyvgq .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#appdiyyvgq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#appdiyyvgq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#appdiyyvgq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#appdiyyvgq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#appdiyyvgq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#appdiyyvgq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appdiyyvgq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#appdiyyvgq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#appdiyyvgq .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#appdiyyvgq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appdiyyvgq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#appdiyyvgq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appdiyyvgq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#appdiyyvgq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appdiyyvgq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#appdiyyvgq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#appdiyyvgq .gt_left {
+  text-align: left;
+}
+
+#appdiyyvgq .gt_center {
+  text-align: center;
+}
+
+#appdiyyvgq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#appdiyyvgq .gt_font_normal {
+  font-weight: normal;
+}
+
+#appdiyyvgq .gt_font_bold {
+  font-weight: bold;
+}
+
+#appdiyyvgq .gt_font_italic {
+  font-style: italic;
+}
+
+#appdiyyvgq .gt_super {
+  font-size: 65%;
+}
+
+#appdiyyvgq .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#appdiyyvgq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#appdiyyvgq .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#appdiyyvgq .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#appdiyyvgq .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#appdiyyvgq .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#appdiyyvgq .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mean">mean</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="sd">sd</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="0.025quant">0.025quant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="0.975quant">0.975quant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mode">mode</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="mean" class="gt_row gt_right">1.21</td>
+<td headers="sd" class="gt_row gt_right">0.14</td>
+<td headers="0.025quant" class="gt_row gt_right">0.94</td>
+<td headers="0.975quant" class="gt_row gt_right">1.49</td>
+<td headers="mode" class="gt_row gt_right">1.21</td>
+</tr>
+<tr>
+<td headers="mean" class="gt_row gt_right">0.00</td>
+<td headers="sd" class="gt_row gt_right">0.00</td>
+<td headers="0.025quant" class="gt_row gt_right">−0.01</td>
+<td headers="0.975quant" class="gt_row gt_right">0.00</td>
+<td headers="mode" class="gt_row gt_right">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>While appending the covariate values to the input data is straightforward, there is an even more convenient way in <code>inlabru</code>. But first, lets fit a explicit spatial model. To do so we will look at the new <code>fmesher</code> library to help us build the mesh.</p>
+</section></section><section id="fmesher-and-spatial-models" class="level1" data-number="3"><h1 data-number="3">
+<span class="header-section-number">3</span> <code>fmesher</code> and Spatial models</h1>
+<p>The SPDE approach relies discretizing the space by defining a mesh that creates an artificial set of neighbours over the study area that allows for the spatial autocorrelation between observation to be calculated. How the mesh is constructed will have an important impact on the inference and predictions we make. Thus it is important to create a good mesh to ensure results are not sensible to the mesh itself. While the mesh construction vary from case to case, there have been some guidelines to create an optimal mesh. There are several arguments that can be used to build the mesh. This vignette will only cover a two-dimensional mesh construction using the <code>fm_mesh_2d_inla</code> function. However, a one-dimensional mesh specification can be created using the <code>fm_mesh_1d</code> function. The arguments for a two-dimensional mesh construction are the followings:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">fm_mesh_2d_inla</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>function (loc = NULL, loc.domain = NULL, offset = NULL, n = NULL, 
+    boundary = NULL, interior = NULL, max.edge = NULL, min.angle = NULL, 
+    cutoff = 1e-12, max.n.strict = NULL, max.n = NULL, plot.delay = NULL, 
+    crs = NULL, ...) 
+NULL</code></pre>
+</div>
+</div>
+<p>First, some reference about the study region is needed, which can be provided by either:</p>
+<ul>
+<li><p>the location of points, supplied on the <code>loc</code> argument.</p></li>
+<li><p>the domain extent which can be supplied as a single polygon on the <code>loc.domain</code> argument.</p></li>
+<li><p>A boundary of the region defined by a set of polygons (e.g a polygon defining the coastline of the study) supplied on the <code>boundary</code> argument.</p></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that if either (1) the location of points or (2) the domain extent are specified, the mesh will be constructed based on a convex hull (a polygon of triangles out of the domain area). Alternatively, it possible to include a non-convex hull as a boundary in the mesh construction instead of the location or loc.domain arguments. This will result in the triangulation to be constrained by the boundary. A non-convex hull mesh can also be created by building a boundary for the points using the <code><a href="https://inlabru-org.github.io/fmesher/reference/fm_nonconvex_hull_inla.html">fm_nonconvex_hull_inla()</a></code> function.</p>
+</div>
+</div>
+<p>The other compulsory argument that needs to be specified is the&nbsp;<code>max.edge</code>&nbsp;which determines the largest allowed triangle length (the lower the value for&nbsp;<code>max.edge</code>&nbsp;the higher the resolution). The value supplied to this argument can be either a scalar, in which case the value controls the triangle edge lengths in the inner domain, or a length two vector that controls the edge lengths in the inner domain and in the outer extension respectively. Notice that the value (or values) passed to the&nbsp;<code>max.edge</code>&nbsp;function must be on the same scale unit as the coordinates. See the <code>Mesh construction</code> tab for further reference and guidelines.</p>
+<section id="building-a-mesh-with-fmesher" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="building-a-mesh-with-fmesher">
+<span class="header-section-number">3.1</span> Building a mesh with <code>fmesher</code>
+</h2>
+<p>If we don’t have a good prior understanding of what our spatial range might be, we can initially approximate it with 1/3 of the study range. Then, we create the value max_edge, which could be between 1/10 and 1/5 of this value. The <code>max.edge</code> is max_edge for the inner mesh, and 5<span class="math inline">\(\times\)</span> max_edge for the outer mesh. The cutoff is max_edge/5. The offset is max_edge for the inner boundary, and 5<span class="math inline">\(\times\)</span> max_edge for the outer boundary. In the next example I illustrate how the mesh can be created using a non-convex hull or using the England <code>sf</code> boundary we defined earlier.</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://inlabru-org.github.io/fmesher/">fmesher</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">boundary0</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.nonconvex.hull.html">inla.nonconvex.hull</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">occurrences_sf</span><span class="op">)</span>,convex <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">max.edge</span> <span class="op">=</span> <span class="fl">20</span></span>
+<span><span class="va">mesh_0</span> <span class="op">=</span> <span class="fu"><a href="https://inlabru-org.github.io/fmesher/reference/fm_mesh_2d.html">fm_mesh_2d</a></span><span class="op">(</span>boundary <span class="op">=</span> <span class="va">boundary0</span>,</span>
+<span>                          max.edge <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span><span class="op">*</span><span class="va">max.edge</span>,</span>
+<span>                          cutoff <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="va">mesh_1</span> <span class="op">=</span> <span class="fu"><a href="https://inlabru-org.github.io/fmesher/reference/fm_mesh_2d.html">fm_mesh_2d</a></span><span class="op">(</span>boundary <span class="op">=</span> <span class="va">England_border_mainland</span>,</span>
+<span>                    max.edge <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span> <span class="op">*</span> <span class="va">max.edge</span>,</span>
+<span>                    cutoff <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>                  crs<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html">crs</a></span><span class="op">(</span><span class="va">England_border_mainland</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section></section><section id="fitting-a-spatially-explicit-model" class="level1" data-number="4"><h1 data-number="4">
+<span class="header-section-number">4</span> Fitting a spatially explicit model</h1>
+<p>Spatial covariates can also be provided directly via the input expressions as long as if they are supported by&nbsp;<a href="https://inlabru-org.github.io/inlabru/reference/eval_spatial.html"><code>eval_spatial()</code></a> and the input data is and <code>sf</code> object. <code>eval_spatial</code> allow us to evaluate spatial covariates from different classes such as <code>SpatRaster</code>, <code>starts</code> and <code>sf</code>. When provided, inlabru automatically evaluates the covariate at the data locations (and also interpolates; see point process modelling):</p>
+<pre><code>components = y ~ cov_x(eval_spatial(myRaster, where = .data.), model = "linear")</code></pre>
+<p>Another component that we would like to incorporate is the SPDE model. We specify the SPDE spatial model using PC priors (more details on this will be added lately).</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spde</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.spde2.pcmatern.html">inla.spde2.pcmatern</a></span><span class="op">(</span><span class="va">mesh_1</span>,</span>
+<span>                           prior.range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">.5</span><span class="op">)</span>,  <span class="co">#  Pr(practic.range&lt;150 km)=0.5</span></span>
+<span>                           prior.sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>   <span class="co">#  PR(sigma&gt;1)=0.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>inlabru</code> automatically creates the projection matrix <span class="math inline">\(\mathbf{A}\)</span> to map the SPDE values at the mesh vertices to the values at the data locations. In <code>sf</code>, the coordinates information is contained in the geometry column:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">occurrences_sf</span><span class="op">$</span><span class="va">geometry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Geometry set for 627 features 
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 138.9365 ymin: 25.07044 xmax: 649.8716 ymax: 634.0002
+Projected CRS: +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=km +no_defs
+First 5 geometries:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (398.9019 610.003)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (408.9006 634.0002)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (423.8988 604.0038)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (304.9141 516.0138)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (307.9137 538.0112)</code></pre>
+</div>
+</div>
+<p>So for <code>sf</code> data, ‘geometry’ data column has all the information, and is properly supported by the <code><a href="https://inlabru-org.github.io/inlabru/reference/eval_spatial.html">eval_spatial()</a></code> and <code><a href="https://inlabru-org.github.io/fmesher/reference/fm_evaluate.html">fm_evaluator()</a></code> methods that are used to map between covariates-locations and locations-mesh basis functions.</p>
+<pre><code>components = y ~ field(geometry, model = inla.spde2.matern(...))</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since the CRS information is part of the geometry column of the&nbsp;<code>sf</code>&nbsp;object, this retains CRS information, so this is more robust, and allows the model to be built on a different CRS than the observation data.</p>
+</div>
+</div>
+<p>Note that “geometry” label isn’t a keyword for <code>inlabru</code>, it is just the default name of the <code>st_geometry</code> column of <code>sf</code> objects. Thus, taking this into account, we can fit an spatially explicit model as follows:</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="va">cmp_model2</span> <span class="op">&lt;-</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span>  </span>
+<span>    <span class="fu">Intercept</span><span class="op">(</span><span class="fl">1</span>,mean.linear<span class="op">=</span><span class="fl">0</span>, prec.linear<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">field</span><span class="op">(</span><span class="va">geometry</span>, model <span class="op">=</span> <span class="va">spde</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">elev</span><span class="op">(</span><span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/eval_spatial.html">eval_spatial</a></span><span class="op">(</span><span class="va">elevation_England</span>, where <span class="op">=</span> <span class="va">.data.</span><span class="op">)</span>, model <span class="op">=</span> <span class="st">"linear"</span>,mean.linear<span class="op">=</span><span class="fl">0</span>, prec.linear<span class="op">=</span><span class="fl">1</span><span class="op">)</span> </span>
+<span>  </span>
+<span>  <span class="va">lik_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/like.html">like</a></span><span class="op">(</span><span class="st">"binomial"</span>,</span>
+<span>                     formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">.</span>,</span>
+<span>                     data <span class="op">=</span> <span class="va">occurrences_sf</span>,</span>
+<span>                     Ntrials <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                     control.family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span>,</span>
+<span>                     domain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">mesh_1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span>  <span class="va">fit_model2</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/bru.html">bru</a></span><span class="op">(</span><span class="va">cmp_model2</span> , <span class="va">lik_model2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we also specified the geometry name on the domain list that is used to project the integration points to the vertices of the mesh.</p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="nblleahnmx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nblleahnmx table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#nblleahnmx thead, #nblleahnmx tbody, #nblleahnmx tfoot, #nblleahnmx tr, #nblleahnmx td, #nblleahnmx th {
+  border-style: none;
+}
+
+#nblleahnmx p {
+  margin: 0;
+  padding: 0;
+}
+
+#nblleahnmx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#nblleahnmx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nblleahnmx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nblleahnmx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nblleahnmx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nblleahnmx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nblleahnmx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nblleahnmx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nblleahnmx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#nblleahnmx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#nblleahnmx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nblleahnmx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nblleahnmx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nblleahnmx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nblleahnmx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nblleahnmx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#nblleahnmx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#nblleahnmx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#nblleahnmx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nblleahnmx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#nblleahnmx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nblleahnmx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nblleahnmx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nblleahnmx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nblleahnmx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nblleahnmx .gt_left {
+  text-align: left;
+}
+
+#nblleahnmx .gt_center {
+  text-align: center;
+}
+
+#nblleahnmx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nblleahnmx .gt_font_normal {
+  font-weight: normal;
+}
+
+#nblleahnmx .gt_font_bold {
+  font-weight: bold;
+}
+
+#nblleahnmx .gt_font_italic {
+  font-style: italic;
+}
+
+#nblleahnmx .gt_super {
+  font-size: 65%;
+}
+
+#nblleahnmx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#nblleahnmx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#nblleahnmx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#nblleahnmx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#nblleahnmx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#nblleahnmx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#nblleahnmx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mean">mean</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="sd">sd</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="0.025quant">0.025quant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="0.975quant">0.975quant</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mode">mode</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="mean" class="gt_row gt_right">1.06</td>
+<td headers="sd" class="gt_row gt_right">0.50</td>
+<td headers="0.025quant" class="gt_row gt_right">−0.24</td>
+<td headers="0.975quant" class="gt_row gt_right">1.88</td>
+<td headers="mode" class="gt_row gt_right">1.17</td>
+</tr>
+<tr>
+<td headers="mean" class="gt_row gt_right">0.00</td>
+<td headers="sd" class="gt_row gt_right">0.00</td>
+<td headers="0.025quant" class="gt_row gt_right">−0.01</td>
+<td headers="0.975quant" class="gt_row gt_right">0.00</td>
+<td headers="mode" class="gt_row gt_right">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section><section id="predictions" class="level1" data-number="5"><h1 data-number="5">
+<span class="header-section-number">5</span> Predictions</h1>
+<p>Commonly we want to predict the spatial field or the linear predictor at a grid of locations. In previous versions, users had to supply a <code>SpatialPixels</code> or <code>SpatialPixelsDataframe</code> (an <code>sp</code> spatial class object ) covering the mesh to do the predictions. <code>inlabru</code> detected the <code>SpatialPixels</code> and convert it to a SpatialPointsDataFrame , then ran <code>generate</code> to produce samples that were recovered as a <code>SpatialPixelsDataFrame</code>. Unfortunately, <code>sf</code> doesn’t have grid-class defined objects. In <code>fmesher</code>, the <code><a href="https://inlabru-org.github.io/fmesher/reference/fm_pixels.html">fm_pixels()</a></code> can be used to generate lattice points covering a mesh (it can generate a <code>sf</code>, <code>SpatRaster</code>, or <code>SpatialPixelsDataFrame</code> covering the mesh or a mask). However, <code>fm_pixels</code> will return <em>points</em>​ organised on a lattice, but not an actual lattice <em>object</em>. So if you want to apply proper plotting methods you need to convert the evaluated data into a lattice, i.e.&nbsp;we want to go from pointwise <code>sf</code> data to a <code><a href="https://rdrr.io/pkg/terra/man/rast.html">terra::rast()</a></code> object so that <code>predict</code> handles <code>terra</code> data in a similar way to how it handles <code>SpatialGridDataFrame</code> input/output. Unfortunately, <code>terra</code> isn’t supported by predict yet. Thus, for the moment being we would need to use as input either a <code>SpatialPointsDataFrame</code>&nbsp;or a <code>sf</code> object.</p>
+<ol type="1">
+<li>
+<p>First, we will generate a <code>sf</code> “lattice” locations covering the <code>mesh_0</code> based on a non-convex hull. Recall that this mesh had no CRS assigned to it, so the mask aregument in <code>fm_pixels</code> won’t work:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#</span></span>
+<span><span class="va">dims</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">300</span><span class="op">)</span></span>
+<span><span class="va">pred.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/fmesher/reference/fm_pixels.html">fm_pixels</a></span><span class="op">(</span><span class="va">mesh_0</span>,dims <span class="op">=</span> <span class="va">dims</span>,mask <span class="op">=</span><span class="va">England_border_mainland</span>,  format <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in st_geos_binop("within", x, y, sparse = sparse, prepared = prepared, : st_crs(x) == st_crs(y) is not TRUE</code></pre>
+</div>
+</div>
+<p>To circumvent this we could either (i) assign the proper CRS when we create the mesh object or (ii) assign the CRS to the <code>fm_pixels</code> output and then masked it according to the boundary of interest as follows:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/fmesher/reference/fm_pixels.html">fm_pixels</a></span><span class="op">(</span><span class="va">mesh_0</span>,dims <span class="op">=</span> <span class="va">dims</span>, format <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">pred.df</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">England_border_mainland</span><span class="op">)</span></span>
+<span><span class="va">pred.df</span> <span class="op">&lt;-</span> <span class="va">pred.df</span><span class="op">[</span><span class="va">England_border_mainland</span>,<span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we can use the <code>predict</code> function and plot the prediction as follows:</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit_model2</span>,<span class="va">pred.df</span>,</span>
+<span>                <span class="va">formula</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>    spde <span class="op">=</span>  <span class="va">field</span>,</span>
+<span>    eta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">Intercept</span> <span class="op">+</span> <span class="va">elev</span> <span class="op">+</span> <span class="va">field</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>  <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/gg.html">gg</a></span><span class="op">(</span><span class="va">pred</span><span class="op">$</span><span class="va">eta</span>, geom <span class="op">=</span> <span class="st">"tile"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">England_border_mainland</span>,alpha<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html">scale_fill_viridis</a></span><span class="op">(</span>option<span class="op">=</span><span class="st">"B"</span>,name<span class="op">=</span><span class="st">"Probability of \noccurrence"</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that when the <code>mask</code> argument is passed on to <code>fm_pixels</code>, the function will create a “grid” based on the <code>dimension</code> given. If <code>mask = TRUE</code> then it will find out which points are inside a mesh and exclude any other points outside of it. Otherwise, if an <code>sf</code> object is supplied, <code>st_within</code> will ran internally to identity the points(“grids”) that are within the mask. Unfortunately, this can be computationally expensive, so I would only use this to produce final maps. For an initial inspection the first approach should work just fine.</p>
+</div>
+</div>
+</li>
+<li><p>In here we use the <code>mask</code> that contains the CRS to compute the pseudo-grid for prediction:</p></li>
+</ol>
+<pre><code>::: {.cell}
+
+```{.r .cell-code}
+pred.df2 &lt;- fm_pixels(mesh_1,dims = dims, 
+                      format = "sf",
+                      mask=England_border_mainland)
+
+pred2 &lt;- predict(fit_model2,pred.df2,
+                formula ~ plogis(Intercept + elev + field)
+)
+```
+:::</code></pre>
+<p>For plotting we have used <code>inlabru</code> generic plotting <code>gg</code> function. In the examples above we have plotted the mean of the linear predictor only. However, what if we wanted to show for exampled the std. dev? recall that the output from predict is an <code>sf</code> object and that <code>sf</code> do not support grid-class object. As a result, we can not use standard <code>geom_sf</code> plotting options (well, we can but the resulting plot would then be an arrange of points). <code>gg</code> by default will plot the mean, but we can pass the column we want on to the aesthetics (i.e.&nbsp;<code>aes(fill=sd)</code>).</p>
+<div class="cell">
+<details><summary>Code</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/gg.html">gg</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">pred</span><span class="op">$</span><span class="va">eta</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">sd</span><span class="op">)</span>,geom <span class="op">=</span> <span class="st">"tile"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html">scale_fill_viridis</a></span><span class="op">(</span>option<span class="op">=</span><span class="st">"A"</span>,name<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">[</span><span class="va">eta</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">England_border_mainland</span>,alpha<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><code>inlabru</code> still do a lot of conversions between <code>sp</code> and <code>sf</code> class object internally. So you could for example, obtain an <code>sf</code> pixel output and compute the points that are within the mask and then covert it to a <code>SpatialPixels</code> data frame used by predict.</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>   <span class="va">pixels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html">as</a></span><span class="op">(</span><span class="va">pixels</span>, <span class="st">"Spatial"</span><span class="op">)</span></span>
+<span>   <span class="va">pixels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html">as</a></span><span class="op">(</span><span class="va">pixels</span>, <span class="st">"SpatialPixels"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While this might work in some cases, I would advise to retain the spatial class object you decide to use for all your analysis, i.e.&nbsp;data you use as input for your model has to be compatible with the data you pass on to <code>predict</code>. For example, functions like <code>sp::coordinates(sf_object)</code> or statments as <code>sp_object$geometry</code> won’t work internally and can produce unexpected errors if your have used sp/coordinates or sf/geometry in the components definitions respectively.</p>
+</section><section id="car-models" class="level1" data-number="6"><h1 data-number="6">
+<span class="header-section-number">6</span> CAR models</h1>
+<p>In this section I’ll illustrate how we can fit structured CAR random effects. <em>details yet to come</em></p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">England_regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="st">"shapefiles/NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.shp"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom' from data source `C:\Users\jb538u\OneDrive - University of Glasgow\Documents\inlabru\inlabru_sf\shapefiles\NUTS_Level_1_January_2018_FCB_in_the_United_Kingdom.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 12 features and 6 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -70.2116 ymin: 5337.901 xmax: 655644.8 ymax: 1220302
+Projected CRS: OSGB36 / British National Grid</code></pre>
+</div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">England_regions</span> <span class="op">&lt;-</span> <span class="va">England_regions</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">England_regions</span><span class="op">$</span><span class="va">nuts118nm</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"England|London|Yorkshire"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">England_border</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># remove islands</span></span>
+<span></span>
+<span><span class="va">England_regions</span> <span class="op">&lt;-</span> <span class="fu">rmapshaper</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_filter_islands.html">ms_filter_islands</a></span><span class="op">(</span><span class="va">England_regions</span>,min_area <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">England_regions</span><span class="op">$</span><span class="va">region_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">England_regions</span><span class="op">$</span><span class="va">nuts118nm</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># remove a few observations that are outside the boundary defined by the shapefile</span></span>
+<span><span class="co"># (we could interpolate based on distance but since there are only 4 data points we will just leave them out for the moment)</span></span>
+<span><span class="va">occurrences_region</span> <span class="op">&lt;-</span> <span class="va">occurrences_sf</span><span class="op">[</span><span class="va">England_regions</span>,<span class="op">]</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here we fit a spatially structured Besag-York-Mollié model (BYM) which is an extension to the intrinsic CAR model that contains an i.i.d. model component:</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/spdep/">spdep</a></span><span class="op">)</span></span>
+<span><span class="va">W.adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/spdep/reference/poly2nb.html">poly2nb</a></span><span class="op">(</span>pl <span class="op">=</span> <span class="va">England_regions</span><span class="op">)</span></span>
+<span><span class="va">W.ENG</span><span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/spdep/reference/nb2mat.html">nb2mat</a></span><span class="op">(</span><span class="va">W.adj</span>, style <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># obtain the polygon each of the points belongs to</span></span>
+<span><span class="co"># Intersection (first argument points, then map)</span></span>
+<span><span class="va">inter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span><span class="op">(</span><span class="va">occurrences_sf</span>, <span class="va">England_regions</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Adding column region with the name of the region containing the points</span></span>
+<span><span class="va">occurrences_region</span><span class="op">$</span><span class="va">region_id</span> <span class="op">&lt;-</span> <span class="va">England_regions</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">inter</span><span class="op">)</span>, <span class="st">"region_id"</span>,</span>
+<span>                       drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">]</span>  <span class="co"># drop geometry</span></span>
+<span></span>
+<span><span class="va">cmp_model3</span> <span class="op">&lt;-</span> <span class="op">~</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span>  </span>
+<span>    <span class="fu">Intercept</span><span class="op">(</span><span class="fl">1</span>,mean.linear<span class="op">=</span><span class="fl">0</span>, prec.linear<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">region_struct</span><span class="op">(</span><span class="va">region_id</span>, model <span class="op">=</span> <span class="st">"bym"</span>, graph <span class="op">=</span> <span class="va">W.ENG</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">lik_model3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/like.html">like</a></span><span class="op">(</span><span class="st">"binomial"</span>,</span>
+<span>                     formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">.</span>,</span>
+<span>                     data <span class="op">=</span> <span class="va">occurrences_region</span>,</span>
+<span>                     Ntrials <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                     control.family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span>,</span>
+<span>                     domain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">mesh_1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span>  </span>
+<span><span class="va">fit_model3</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://inlabru-org.github.io/inlabru/reference/bru.html">bru</a></span><span class="op">(</span><span class="va">cmp_model3</span> , <span class="va">lik_model3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predict_result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit_model3</span>, <span class="va">England_regions</span>,<span class="va">formula</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">Intercept</span><span class="op">+</span><span class="va">region_struct</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">predict_result3</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">mean</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">England_border_mainland</span>,alpha<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html">scale_fill_viridis</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"Probability of \noccurrence"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-lindgren2011" class="csl-entry" role="listitem">
+Lindgren, Finn, Håvard Rue, and Johan Lindström. 2011. <span>“An Explicit Link Between Gaussian Fields and Gaussian Markov Random Fields: The Stochastic Partial Differential Equation Approach.”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> 73 (4): 423–98. <a href="https://doi.org/10.1111/j.1467-9868.2011.00777.x">https://doi.org/10.1111/j.1467-9868.2011.00777.x</a>.
+</div>
+</div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -185,14 +185,15 @@ Note
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Data sets </span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gorillas_sf)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>nests <span class="ot">&lt;-</span> gorillas_sf<span class="sc">$</span>nests</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mesh <span class="ot">&lt;-</span> gorillas_sf<span class="sc">$</span>mesh</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>boundary <span class="ot">&lt;-</span> gorillas_sf<span class="sc">$</span>boundary</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>gcov <span class="ot">&lt;-</span> <span class="fu">gorillas_sf_gcov</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Data sets </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gorillas_sf)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>nests <span class="ot">&lt;-</span> gorillas_sf<span class="sc">$</span>nests</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>mesh <span class="ot">&lt;-</span> gorillas_sf<span class="sc">$</span>mesh</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>boundary <span class="ot">&lt;-</span> gorillas_sf<span class="sc">$</span>boundary</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>gcov <span class="ot">&lt;-</span> <span class="fu">gorillas_sf_gcov</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
@@ -234,11 +235,11 @@ Intercept -3.817061673   0</code></pre>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>elevation_missing <span class="ot">&lt;-</span> gcov<span class="sc">$</span>elevation</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">values</span>(elevation_missing)[<span class="fu">values</span>(elevation_missing)<span class="sc">==</span><span class="dv">2008</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_spatraster</span>(<span class="at">data =</span> elevation_missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<pre><code>Error in geom_spatraster(data = elevation_missing): could not find function "geom_spatraster"</code></pre>
+<div class="cell-output-display">
+<p><img src="PP_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>comp3_missing <span class="ot">&lt;-</span> geometry <span class="sc">~</span> <span class="fu">elevation</span>(elevation_missing, <span class="at">model =</span> <span class="st">"linear"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fit3_miss <span class="ot">&lt;-</span> <span class="fu">lgcp</span>(comp3_missing, nests, <span class="at">samplers =</span> boundary, <span class="at">domain =</span> <span class="fu">list</span>(<span class="at">geometry =</span> mesh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>comp3_missing <span class="ot">&lt;-</span> geometry <span class="sc">~</span> <span class="fu">elevation</span>(elevation_missing, <span class="at">model =</span> <span class="st">"linear"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fit3_miss <span class="ot">&lt;-</span> <span class="fu">lgcp</span>(comp3_missing, nests, <span class="at">samplers =</span> boundary, <span class="at">domain =</span> <span class="fu">list</span>(<span class="at">geometry =</span> mesh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in input_eval.bru_input(subcomp$input, data = lh$data, env = env, : Model input 'elevation_missing' for 'elevation' returned some NA values.
 Attempting to fill in spatially by nearest available value.
@@ -249,7 +250,7 @@ To avoid this basic covariate imputation, supply complete data.</code></pre>
 Attempting to fill in spatially by nearest available value.
 To avoid this basic covariate imputation, supply complete data.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit3_miss<span class="sc">$</span>summary.fixed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fit3_miss<span class="sc">$</span>summary.fixed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  mean           sd   0.025quant     0.5quant   0.975quant
 elevation  0.004193971 0.0002466463  0.003710553  0.004193971  0.004677389
@@ -261,19 +262,19 @@ Intercept -3.816986410   0</code></pre>
 </div>
 <p>Alternatively, we could write a function that does this for us (we use <code>bru_fill_missing</code> to impute the missing values) :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>f.elev <span class="ot">&lt;-</span> <span class="cf">function</span>(raster,where) {</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the values</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">eval_spatial</span>(raster, where)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fill in missing values</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(v))) {</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">bru_fill_missing</span>(raster, where, v)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(v)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>comp3_in <span class="ot">&lt;-</span> geometry <span class="sc">~</span> <span class="fu">elevation</span>(<span class="fu">f.elev</span>(<span class="at">raster =</span> elevation_missing,<span class="at">where =</span> .data.), <span class="at">model =</span> <span class="st">"linear"</span>)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>fit3_in <span class="ot">&lt;-</span> <span class="fu">lgcp</span>(comp3_in, nests, <span class="at">samplers =</span> boundary, <span class="at">domain =</span> <span class="fu">list</span>(<span class="at">geometry =</span> mesh))</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>fit3_in<span class="sc">$</span>summary.fixed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>f.elev <span class="ot">&lt;-</span> <span class="cf">function</span>(raster,where) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract the values</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">eval_spatial</span>(raster, where)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fill in missing values</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(v))) {</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">bru_fill_missing</span>(raster, where, v)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(v)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>comp3_in <span class="ot">&lt;-</span> geometry <span class="sc">~</span> <span class="fu">elevation</span>(<span class="fu">f.elev</span>(<span class="at">raster =</span> elevation_missing,<span class="at">where =</span> .data.), <span class="at">model =</span> <span class="st">"linear"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>fit3_in <span class="ot">&lt;-</span> <span class="fu">lgcp</span>(comp3_in, nests, <span class="at">samplers =</span> boundary, <span class="at">domain =</span> <span class="fu">list</span>(<span class="at">geometry =</span> mesh))</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>fit3_in<span class="sc">$</span>summary.fixed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  mean           sd   0.025quant     0.5quant   0.975quant
 elevation  0.004193971 0.0002466463  0.003710553  0.004193971  0.004677389
@@ -285,19 +286,19 @@ Intercept -3.816986410   0</code></pre>
 </div>
 <p>Lets fit now a LGCP including a continuous spatial effects and an elevation effect.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>matern <span class="ot">&lt;-</span> <span class="fu">inla.spde2.pcmatern</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  mesh,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior.sigma =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.01</span>),</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior.range =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.01</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>comp_lgcp <span class="ot">&lt;-</span> geometry <span class="sc">~</span> <span class="fu">Intercept</span>(<span class="dv">1</span>)  <span class="sc">+</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">elevation</span>(gcov<span class="sc">$</span>elevation, <span class="at">model =</span> <span class="st">"linear"</span>)<span class="sc">+</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>             <span class="fu">field</span>(geometry, <span class="at">model =</span> matern)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>fit_lgcp <span class="ot">&lt;-</span> <span class="fu">lgcp</span>(comp_lgcp, nests, </span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">samplers =</span> boundary, </span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">domain =</span> <span class="fu">list</span>(<span class="at">geometry =</span> mesh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>matern <span class="ot">&lt;-</span> <span class="fu">inla.spde2.pcmatern</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  mesh,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior.sigma =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.01</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior.range =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.01</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>comp_lgcp <span class="ot">&lt;-</span> geometry <span class="sc">~</span> <span class="fu">Intercept</span>(<span class="dv">1</span>)  <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">elevation</span>(gcov<span class="sc">$</span>elevation, <span class="at">model =</span> <span class="st">"linear"</span>)<span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>             <span class="fu">field</span>(geometry, <span class="at">model =</span> matern)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>fit_lgcp <span class="ot">&lt;-</span> <span class="fu">lgcp</span>(comp_lgcp, nests, </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">samplers =</span> boundary, </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">domain =</span> <span class="fu">list</span>(<span class="at">geometry =</span> mesh))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -318,40 +319,40 @@ Important
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="PP_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="288"></p>
+<p><img src="PP_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Lambda <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  fit_lgcp,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fm_int</span>(mesh, boundary),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">sum</span>(weight <span class="sc">*</span> <span class="fu">exp</span>(Intercept <span class="sc">+</span> elevation <span class="sc">+</span> field))</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>Lambda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Lambda <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  fit_lgcp,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fm_int</span>(mesh, boundary),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">sum</span>(weight <span class="sc">*</span> <span class="fu">exp</span>(Intercept <span class="sc">+</span> elevation <span class="sc">+</span> field))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>Lambda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      mean       sd   q0.025     q0.5   q0.975   median mean.mc_std_err
-1 678.3862 24.87518 627.7427 677.8863 737.2592 677.8863        2.487518
+1 682.7261 26.77353 638.6272 681.0564 743.4143 681.0564        2.677353
   sd.mc_std_err
-1      1.964852</code></pre>
+1      2.072871</code></pre>
 </div>
 </div>
 <p>Given this values of <span class="math inline">\(\lambda_{int}\)</span> we can estimate the posterior abundance as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Nest <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  fit_lgcp,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fm_int</span>(mesh, boundary),</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">data.frame</span>(</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="dv">500</span><span class="sc">:</span><span class="dv">800</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dpois</span>(<span class="dv">500</span><span class="sc">:</span><span class="dv">800</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">lambda =</span> <span class="fu">sum</span>(weight <span class="sc">*</span> <span class="fu">exp</span>(Intercept <span class="sc">+</span> elevation <span class="sc">+</span> field))</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Nest) <span class="sc">+</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> mean, <span class="at">colour =</span> <span class="st">"Posterior"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Nest <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  fit_lgcp,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fm_int</span>(mesh, boundary),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="dv">500</span><span class="sc">:</span><span class="dv">800</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dpois</span>(<span class="dv">500</span><span class="sc">:</span><span class="dv">800</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">lambda =</span> <span class="fu">sum</span>(weight <span class="sc">*</span> <span class="fu">exp</span>(Intercept <span class="sc">+</span> elevation <span class="sc">+</span> field))</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Nest) <span class="sc">+</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> mean, <span class="at">colour =</span> <span class="st">"Posterior"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="PP_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
